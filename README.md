@@ -202,7 +202,7 @@ thread.start();
 - No dependencies between elements.
 
 ## Useful links
-- [Stream API][https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html]
-- [Iterator API][https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html]
-- [Spliterator API][https://docs.oracle.com/javase/8/docs/api/java/util/Spliterator.html]
-- [Data file][http://donnees.ville.montreal.qc.ca/dataset/ebb813dd-a93f-4fb0-8137-80492a30a1fa/resource/0a5984e4-752f-401e-b2d9-aa0567535d39/download/frenepublicinjection2016.csv]
+- [Stream API](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html)
+- [Iterator API](https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html)
+- [Spliterator API](https://docs.oracle.com/javase/8/docs/api/java/util/Spliterator.html)
+- [Data file](http://donnees.ville.montreal.qc.ca/dataset/ebb813dd-a93f-4fb0-8137-80492a30a1fa/resource/0a5984e4-752f-401e-b2d9-aa0567535d39/download/frenepublicinjection2016.csv)
