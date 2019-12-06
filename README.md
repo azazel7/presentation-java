@@ -101,9 +101,11 @@ while(it.hasNext()) {
 Do a complete histogramm of the first letter of each element ... but two time faster!
 
 ### Tips
+- `spliterator` function of `Collection`.
 - `Spliterator` are splittable iterator.
 	- `tryAdvance` try to move the iterator while applying a function.
 	- `forEachRemaining` apply a function to all the remaining elements.
+	- `trySplit` split the spliterator in two.
 ```java
 import java.util.*;
 import java.io.*;
@@ -204,7 +206,7 @@ public class Main {
 ```
 
 ### Tips
-- `stream` function of `Collection`.
+- `stream` and `parallelStream` function of `Collection`.
 - The `Stream` API provide multiple functions.
 	- `filter` to remove element when the condition is false.
 	- `map` to turn each element into a new one.
@@ -231,7 +233,6 @@ System.out.println(a);
 - No replacement.
 - Mono thread.
 - Cannot change the list.
-- No dependencies between elements.
 
 ### Iterators
 - Iterate step by step.
