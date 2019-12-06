@@ -52,7 +52,7 @@ public class Main {
 }
 ```
 ### Tips
-- `for` loop does not work ([documentation][https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html].
+- `for` loop does not work ([documentation](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html)).
 - `forEach` may be interesting.
 ```java
 Collection<Integer> otter = new LinkedList<Integer>();
@@ -175,10 +175,38 @@ thread.start();
 ### Goal
 Get the average size of a line using the `Stream` API.
 
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main {
+	//The function to load the data
+	public static Collection<String> loadData(String filename) throws IOException{
+		Collection<String> ret = new LinkedList<String>();
+		BufferedReader csvReader = new BufferedReader(new FileReader(filename));
+		String row;
+		int line_count = 0;
+		while ((row = csvReader.readLine()) != null) {
+			if(line_count > 0) {
+				ret.add(row);
+			}
+		    line_count += 1;
+		}
+		csvReader.close();
+		return ret;
+	}
+	public static void main(String[] args) throws IOException {
+		Collection<String> data;
+		data = loadData("data.txt");
+		//Write your code here	
+	}
+}
+```
+
 ### Tips
 - `stream` function of `Collection`.
 - The `Stream` API provide multiple functions.
-	- `filter` to remove element when the condition is true.
+	- `filter` to remove element when the condition is false.
 	- `map` to turn each element into a new one.
 	- `reduce` to combine element together into one.
 ```java
