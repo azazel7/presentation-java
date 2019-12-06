@@ -146,11 +146,12 @@ public class Main {
 		
 		Spliterator<BasicInteger> sp1 = ducks.spliterator();
 		Spliterator<BasicInteger> sp2 = sp1.trySplit();
+		System.out.println("Estimated Size");
 		System.out.println(sp1.estimateSize());
 		System.out.println(sp2.estimateSize());
-		System.out.println("Splity");
 		inc(sp1);
 		dec(sp2);
+		System.out.println("Collection Values");
 		ducks.forEach(e -> e.print());
 	}
 }
@@ -169,6 +170,29 @@ task.run();
 //Create a new Thread object, then start it
 Thread thread = new Thread(task);
 thread.start();
+```
+## Exercice 4
+### Goal
+Get the average size of a line using the `Stream` API.
+
+### Tips
+- `stream` function of `Collection`.
+- The `Stream` API provide multiple functions.
+	- `filter` to remove element when the condition is true.
+	- `map` to turn each element into a new one.
+	- `reduce` to combine element together into one.
+```java
+Collection<Integer> ducks = new HashSet<Integer>();
+for(int i = 0; i < 10; ++i)
+	ducks.add(i);
+Stream<Integer> s = ducks.stream();
+//Nothing is done yet
+Stream<Integer> s1 = s.filter(e -> e%2 == 0)
+					  .map(e -> e+100);
+
+//The whole pipeline is evaluated.
+Integer a = s1.reduce(0, (a,b) -> a+b);
+System.out.println(a);
 ```
 
 ## Conclusion
