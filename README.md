@@ -5,7 +5,7 @@ A quick presentation of collection browsing.
 - A collection is an interface to store an ensemble of objects.
 - Many implementations for Collections.
 - We saw the `LinkedList`.
-- We used it.
+- We used it and we accessed the elements.
 
 ```java
 LinkedList<Integer> otter = new LinkedList<Integer>();
@@ -16,16 +16,20 @@ for(int i = 0; i < otter.size(); ++i)
 ```
 
 ## The issues
+- Accessing a `LinkedList` like that is inefficient.
 - `LinkedList` are not always the best choice.
 - Other collections cannot be accessed like the `LinkedList`.
 
 ## Exercice 1
 ### Goal
-Print the content of each element in `data`.
+How many element in `data` start with the letter 'V'.
 
 ```java
+import java.util.*;
+import java.io.*;
+
 public class Main {
-	
+	//The function to load the data
 	public static Collection<String> loadData(String filename) throws IOException{
 		Collection<String> ret = new LinkedList<String>();
 		BufferedReader csvReader = new BufferedReader(new FileReader(filename));
@@ -33,7 +37,6 @@ public class Main {
 		int line_count = 0;
 		while ((row = csvReader.readLine()) != null) {
 			if(line_count > 0) {
-				String[] data = row.split(",");
 				ret.add(row);
 			}
 		    line_count += 1;
@@ -41,20 +44,15 @@ public class Main {
 		csvReader.close();
 		return ret;
 	}
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Collection<String> data;
-		try {
-			data = loadData("/home/magoa/phd/TA/LA1/data/frenepublicinjection2014.csv");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		//Write the code here
+		data = loadData("data.txt");
+		//Write your code here	
 	}
-
 }
 ```
 ### Tips
-- `for` loop does not work.
+- `for` loop does not work ([documentation][https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html].
 - `forEach` may be interesting.
 ```java
 Collection<Integer> otter = new LinkedList<Integer>();
@@ -69,78 +67,108 @@ for(Integer e : otter){
 	System.out.println(e);
 }
 ```
+- `charAt` to access a char in a String.
+
 ## Exercice 2
 ### Goal
 Remove the element that contains a quote (").
 
-```java
-public class Main {
-	
-	public static Collection<String> loadData(String filename) throws IOException{
-		Collection<String> ret = new LinkedList<String>();
-		BufferedReader csvReader = new BufferedReader(new FileReader(filename));
-		String row;
-		int line_count = 0;
-		while ((row = csvReader.readLine()) != null) {
-			if(line_count > 0) {
-				String[] data = row.split(",");
-				ret.add(row);
-			}
-		    line_count += 1;
-		}
-		csvReader.close();
-		return ret;
-	}
-	public static void main(String[] args) {
-		Collection<String> data;
-		try {
-			data = loadData("/home/magoa/phd/TA/LA1/data/frenepublicinjection2014.csv");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			//Write the code here
-		}
-	}
-
-}
-```
 ### Tips
 - `forEach` does not work.
-- `Iterator` are the key.
-	- `hasNext()`
-	- `next()`
-
-## Exercice 2
-Remove the element that contains a quote (").
-
+- `Iterator` is the key.
+	- `hasNext()` to check if there is more item.
+	- `next()` to move to the next item and access it.
+	- `remove` to remove an item.
 ```java
-public class Main {
-	
-	public static Collection<String> loadData(String filename) throws IOException{
-		Collection<String> ret = new LinkedList<String>();
-		BufferedReader csvReader = new BufferedReader(new FileReader(filename));
-		String row;
-		int line_count = 0;
-		while ((row = csvReader.readLine()) != null) {
-			if(line_count > 0) {
-				String[] data = row.split(",");
-				ret.add(row);
-			}
-		    line_count += 1;
-		}
-		csvReader.close();
-		return ret;
-	}
-	public static void main(String[] args) {
-		Collection<String> data;
-		try {
-			data = loadData("/home/magoa/phd/TA/LA1/data/frenepublicinjection2014.csv");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			//Write the code here
-		}
-	}
+Collection<Integer> ducks = new HashSet<Integer>();
+for(int i = 0; i < 10; ++i)
+	ducks.add(i);
+Iterator<Integer> it = ducks.iterator();
 
+//While there is element in the iterator, we keep iterating
+while(it.hasNext()) {
+	Integer current = it.next(); //Access the next element
+	System.out.println(current);
+
+	//If current is an even number, remove it.
+	if(current % 2 == 0)
+		it.remove();
 }
+```
+
+## Exercice 3
+### Goal
+Do a complete histogramm of the first letter of each element ... but two time faster!
+
+### Tips
+- `Spliterator` are splittable iterator.
+	- `tryAdvance` try to move the iterator while applying a function.
+	- `forEachRemaining` apply a function to all the remaining elements.
+```java
+import java.util.*;
+import java.io.*;
+
+public class BasicInteger {
+	Integer a = 0;
+	public BasicInteger() {
+		a = 0;
+	}
+	public BasicInteger(Integer start) {
+		a = start;
+	}
+	public void print() {
+		System.out.println(a);
+	}
+	public void inc() {
+		a += 1;
+	}
+	public void inc(int b) {
+		a += b;
+	}
+	public void dec() {
+		a -= 1;
+	}
+	public void dec(int b) {
+		a -= b;
+	}
+}
+public class Main {
+	public static void inc(Spliterator<BasicInteger> c) {
+		c.forEachRemaining(e -> e.inc(10));
+	}
+	public static void dec(Spliterator<BasicInteger> c) {
+		c.forEachRemaining(e -> e.dec(10));
+	}
+	public static void main(String[] args) throws IOException {
+		Collection<BasicInteger> ducks = new HashSet<BasicInteger>();
+		for(int i = 0; i < 10; ++i)
+			ducks.add(new BasicInteger(i));
+		
+		Spliterator<BasicInteger> sp1 = ducks.spliterator();
+		Spliterator<BasicInteger> sp2 = sp1.trySplit();
+		System.out.println(sp1.estimateSize());
+		System.out.println(sp2.estimateSize());
+		System.out.println("Splity");
+		inc(sp1);
+		dec(sp2);
+		ducks.forEach(e -> e.print());
+	}
+}
+```
+- `Thread` are object to run multiple functions at once.
+```java
+//Create a task object which will be the function executed by the thread
+Runnable task = () -> {
+	String threadName = Thread.currentThread().getName();
+	System.out.println("Hello " + threadName);
+};
+
+//Run the task in the main thread.
+task.run();
+
+//Create a new Thread object, then start it
+Thread thread = new Thread(task);
+thread.start();
 ```
 
 ## Conclusion
